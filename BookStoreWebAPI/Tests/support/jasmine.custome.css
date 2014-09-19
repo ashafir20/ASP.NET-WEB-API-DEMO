@@ -1,0 +1,13 @@
+﻿.html-reporter .symbol-summary li.pending:before {
+    color: #0c56aa;
+    content: "*";
+}
+
+.html-reporter .summary li.pending a {
+    color: #0c56aa;
+}
+
+.html-reporter .summary li.pending:after {
+    content: "(PENDING)";
+    color: #0c56aa;
+}

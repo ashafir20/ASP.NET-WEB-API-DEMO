@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>WebAPI Test Runner</title>
+    <link rel="shortcut icon" type="image/png" href="../content/images/icon.png" />
+    <link href="lib/jasmine.css" rel="stylesheet" />  
+    <link href="support/jasmine.custom.css" rel="stylesheet" /> 
+</head>
+<body>
+    <!-- Jasmine Libs -->
+    <script src="lib/jasmine.js"></script>
+    <script src="lib/jasmine-html.js"></script>
+    <script src="lib/boot.js"></script>
+    <script src="lib/ngMidwayTester.js"></script>
+
+    <!-- Vendor Scripts -->
+    <script src="../scripts/angular.js"></script>
+    <script src="../scripts/breeze.debug.js"></script>
+    <script src="../scripts/breeze.angular.q.js"></script>
+
+    <!--Testing-->
+    <script src="support/testFns.js"></script>
+    <!-- async specs (tests); they could take longer -->
+    <script src="specs/querySpec.async.js"></script>
+
+</body>
+</html>
