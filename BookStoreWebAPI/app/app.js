@@ -12,11 +12,13 @@
         'common.bootstrap', // bootstrap dialog wrapper functions
 
         // 3rd Party Modules
+        'breeze.angular.q',
+        'breeze.directives',
         'ui.bootstrap'      // ui-bootstrap (ex: carousel, pagination, dialog)
     ]);
     
     // Handle routing errors and success events
-    app.run(['$route',  function ($route) {
+    app.run(['$route', 'config.breeze',  function ($route) {
             // Include $route to kick start the router.
         }]);        
 })();

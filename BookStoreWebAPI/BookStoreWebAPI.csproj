@@ -224,6 +224,7 @@
     <Content Include="app\common\common.js" />
     <Content Include="app\common\logger.js" />
     <Content Include="app\common\spinner.js" />
+    <Content Include="app\config.breeze.js" />
     <Content Include="app\config.exceptionHandler.js" />
     <Content Include="app\config.js" />
     <Content Include="app\config.route.js" />
@@ -310,6 +311,7 @@
     <Content Include="Scripts\breeze.angular.q.js" />
     <Content Include="Scripts\breeze.debug.js" />
     <Content Include="Scripts\breeze.directives.js" />
+    <Content Include="Scripts\breeze.directives.validation.js" />
     <Content Include="Scripts\breeze.min.js" />
     <Content Include="Scripts\breeze.saveErrorExtensions.js" />
     <Content Include="Scripts\breeze.to%24q.shim.js" />

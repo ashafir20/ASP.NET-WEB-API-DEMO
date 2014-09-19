@@ -2,12 +2,20 @@
     'use strict';
 
     var serviceId = 'datacontext';
-    angular.module('app').factory(serviceId, ['common', datacontext]);
+    angular.module('app').factory(serviceId,
+        ['common', 'entityManagerFactory', datacontext]);
 
-    function datacontext(common) {
+    function datacontext(common, entityManagerFactory) {
         var $q = common.$q;
+        var manager = entityManagerFactory.newManager();
+
+        var getLogFn = common.logger.getLogFn;
+        var log = getLogFn(serviceId);
+        var logError = getLogFn(serviceId, 'error');
+        var logSuccess = getLogFn(serviceId, 'success');
 
         var service = {
+            getBooks: getBooks,
             getPeople: getPeople,
             getMessageCount: getMessageCount
         };
@@ -27,6 +35,23 @@
                 { firstName: 'Haley', lastName: 'Guthrie', age: 35, location: 'Wyoming' }
             ];
             return $q.when(people);
+        }
+
+        function getBooks() {
+            return breeze.EntityQuery.from('Books')
+                .using(manager)
+                .execute()
+                .then(success)
+                .catch(fail)
+
+            function success(resp) {
+                var books = resp.results;
+                logSuccess("Yay! We got books " + books.length, null, true);
+            };
+
+            function fail(error) {
+                logError("oops we got " + error.message);
+            };
         }
     }
 })();
