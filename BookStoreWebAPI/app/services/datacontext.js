@@ -15,14 +15,57 @@
         var logSuccess = getLogFn(serviceId, 'success');
 
         var service = {
+            addBookToOrder: addBookToOrder,
+            createOrder: createOrder,
             getBooks: getBooks,
             getPeople: getPeople,
-            getMessageCount: getMessageCount
+            getMessageCount: getMessageCount,
+            ready: getReady()
         };
 
         return service;
 
+        function addBookToOrder(book, order) {
+            if (!book || !order) {
+                logError("No book or order!", null, true);
+                return;
+            };
+            var detail = manager.createEntity("OrderDetail", {
+                book: book,
+                order: order,
+                quantity: 1
+            });
+            return detail;
+        };
+
+
+        function createOrder() {
+            var order = manager.createEntity("Order", {
+                orderDate: new Date().toUTCString()
+            });
+            return order;
+        };
+
         function getMessageCount() { return $q.when(72); }
+
+        function getBooks() {
+            return breeze.EntityQuery.from('Books')
+                .using(manager)
+                .execute()
+                .then(success)
+                .catch(fail)
+
+            function success(resp) {
+                var books = resp.results;
+                logSuccess('Hooray we got books!!' +
+                    books.length, null, true);
+                return books;
+            };
+
+            function fail(error) {
+                logError("oops we got " + error.message);
+            };
+        }
 
         function getPeople() {
             var people = [
@@ -37,21 +80,17 @@
             return $q.when(people);
         }
 
-        function getBooks() {
-            return breeze.EntityQuery.from('Books')
-                .using(manager)
-                .execute()
-                .then(success)
-                .catch(fail)
-
-            function success(resp) {
-                var books = resp.results;
-                logSuccess("Yay! We got books " + books.length, null, true);
-            };
-
-            function fail(error) {
-                logError("oops we got " + error.message);
-            };
+        function getReady() {
+            manager.metadataStore.fetchMetadata(manager.dataService)
+                .then(function() {
+                    logSuccess("MetaData Fetched!");
+                    return true;
+                })
+                .catch(function(error) {
+                    logError("MetaData fetch failed! We got " + error.message, error, true);
+                return $q.reject(error);
+            });
         }
+
     }
 })();

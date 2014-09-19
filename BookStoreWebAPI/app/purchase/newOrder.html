@@ -1,0 +1,36 @@
+﻿<section class="mainbar" data-ng-controller="newOrder as vm">
+    <section class="matter">
+        <div class="container">
+            <div class="row">
+                <div class="widget wblue">
+                    <div data-cc-widget-header title="{{vm.title}}"></div>
+
+                    <div class="widget-content user">
+                        Customer name: <input ng-model="vm.order.customer" autofocus placeholder="Customer Name" />
+                        Order date: {{ vm.order.orderDate | date: 'medium' }}
+                        <hr />
+                        <div class="col-md-6">
+                            <div ng-repeat="item in vm.orderDetails">
+                                Title: {{ item.book.name }}  Price: {{ item.book.price | currency: "USD$" }}
+                                Quantity: <input ng-model="item.quantity" />
+                                Net: {{ item.book.price * item.quantity |currency:"USD$" }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div ng-repeat="book in vm.books" ng-click="vm.addBookToOrder(book)">
+                                Title: {{ book.name }}
+                                Author {{ book.author }}
+                                Price {{ book.price | currency:"USD$" }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="widget-foot">
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
