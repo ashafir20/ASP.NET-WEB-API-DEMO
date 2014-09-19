@@ -17,10 +17,14 @@
         var service = {
             addBookToOrder: addBookToOrder,
             createOrder: createOrder,
+            changesCount: changesCount,
             getBooks: getBooks,
             getPeople: getPeople,
             getMessageCount: getMessageCount,
-            ready: getReady()
+            getOrdersAndDetails: getOrdersAndDetails,
+            isSaving: false,
+            ready: getReady(),
+            saveOrder: saveOrder,
         };
 
         return service;
@@ -38,6 +42,9 @@
             return detail;
         };
 
+        function changesCount() {
+            return mamager.getChanges().length;
+        }
 
         function createOrder() {
             var order = manager.createEntity("Order", {
@@ -47,6 +54,22 @@
         };
 
         function getMessageCount() { return $q.when(72); }
+
+
+        function getOrdersAndDetails() {
+            return breeze.EntityQuery.from("Orders")
+                .expand("orderDetails")
+                .using(manager)
+                .execute()
+                .then(success)
+                .catch(fail);
+
+            function success(data) {
+                var results = data.results;
+                logSuccess("Got " + results.length, null, true);
+                return results;
+            }
+        };
 
         function getBooks() {
             return breeze.EntityQuery.from('Books')
@@ -61,11 +84,12 @@
                     books.length, null, true);
                 return books;
             };
+        };
 
-            function fail(error) {
-                logError("oops we got " + error.message);
-            };
-        }
+
+        function fail(error) {
+            logError("oops we got " + error.message);
+        };
 
         function getPeople() {
             var people = [
@@ -90,7 +114,46 @@
                     logError("MetaData fetch failed! We got " + error.message, error, true);
                 return $q.reject(error);
             });
-        }
+        };
+
+        function saveOrder() {
+            service.isSaving = true;
+            manager.saveChanges()
+                .catch(saveFailed)
+                .finally(saveFinally)
+                .then(saveOrdersSuccess);
+        };
+
+        function saveFinally() {
+            service.isSaving = false;
+        };
+
+        function saveFailed(error) {
+            var msg = 'Saved Failed ' + breeze.saveErrorMessageService.getErrorMessage(error);
+            error.message = msg;
+            logError(msg, error, true);
+            throw error;
+        };
+
+        function saveOrdersSuccess(saveResult) {
+            var order = saveResult.entities.filter(function(order) {
+                return order.entityType.shortName == 'Order';
+            })[0];
+
+            var message = "Saved order " + order.customer;
+            logSuccess(message, null, true);
+
+            breeze.EntityQuery
+                .from("Orders")
+                .where("id", "eq", order.id)
+                .expand("orderDetails")
+                .using(manager).execute().then(function(data) {
+                    var order = data.results[0];
+                    var message = "Retrieved saved order " + order.customer +
+                        "and his " + order.orderDetails.length + " books.";
+                logSuccess(message, order, true);
+            });
+        };
 
     }
 })();

@@ -12,12 +12,9 @@
         var vm = this;
         vm.addBookToOrder = addBookToOrder;
         vm.books = [];
-        vm.changesCount = changesCount;
-        vm.isSaveDisabled = isSaveDisabled;
         vm.order = null;
         vm.orderDetails = [];
         vm.save = save;
-
 
         activate();
 
@@ -52,11 +49,6 @@
             else {
                 details[index].quantity += 1;
             }
-
-        }
-
-        function changesCount() {
-            return datacontext.changesCount();
         };
 
         function createOrder() {
@@ -64,12 +56,9 @@
             vm.orderDetails = [];
         };
 
-        function isSaveDisabled() {
-            return datacontext.isSaving;
-        };
-
         function save() {
-            datacontext.saveOrder().then(success);
+            datacontext.saveOrder();
+                //.then(success);
             function success() {
                 createOrder();
                 logSuccess("Order saved.");

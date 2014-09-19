@@ -1,0 +1,27 @@
+﻿<section class="mainbar" data-ng-controller="orders as vm">
+    <section class="matter">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="widget wblue">
+                    <div data-cc-widget-header title="My Orders">
+                    </div>
+                    <div class="widget-content user">
+                        <div ng-repeat="order in vm.orders" ng-click="vm.toggleDetails(order)">
+                            Customer name: {{order.customer}}
+                            Order date: {{order.orderDate | date: 'medium'}}
+                            <div ng-if="vm.showDetails(order)">
+                                <div ng-repeat="item in order.orderDetails">
+                                    Title: {{ item.book.name }}  Price: {{ item.book.price | currency: "USD$" }}
+                                    Quantity: {{item.quantity }}
+                                    Net: {{ item.book.price * item.quantity | currency:"USD$" }}
+                                </div>
+                            </div>
+                            <hr ng-if="! $last" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+

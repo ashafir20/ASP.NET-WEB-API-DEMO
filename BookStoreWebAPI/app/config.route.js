@@ -45,8 +45,18 @@
                     title: 'newOrder',
                     templateUrl: 'app/purchase/newOrder.html',
                     settings: {
-                        nav: 2,
+                        nav: 3,
                         content: '<i class="fa fa-lock"></i> New Order'
+                    }
+                }
+            }, {
+                url: '/orders',
+                config: {
+                    title: 'Orders',
+                    templateUrl: 'app/purchase/orders.html',
+                    settings: {
+                        nav: 4,
+                        content: '<i class="fa fa-lock"></i> Orders'
                     }
                 }
             }

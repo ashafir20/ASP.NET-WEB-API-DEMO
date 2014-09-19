@@ -5,8 +5,15 @@
                 <div class="widget wblue">
                     <div data-cc-widget-header title="{{vm.title}}"></div>
 
+                    <button class="btn btn-success navbar-btn"
+                            ng-disabled="vm.isSaveDisabled()"
+                            ng-click="vm.save()"
+                            title="Save Order">
+                        <i class="icon-save"></i> Save
+                    </button>&nbsp;&nbsp;
+
                     <div class="widget-content user">
-                        Customer name: <input ng-model="vm.order.customer" autofocus placeholder="Customer Name" />
+                        Customer name: <input ng-model="vm.order.customer" autofocus="true" placeholder="Customer Name" />
                         Order date: {{ vm.order.orderDate | date: 'medium' }}
                         <hr />
                         <div class="col-md-6">
